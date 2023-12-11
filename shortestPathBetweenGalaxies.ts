@@ -5,18 +5,39 @@ const UNIVERSE = fs.readFileSync('./input.txt').toString()
 const EMPTY_SPACE = "."
 const GALAXY = "#" //change # into a number
 
-const EMPTY_ROWS: number[] = []
-const EMPTY_COLS: number[] = []
-
 function expandTheUniverse(universeMatrix: string[][]) {
   //TODO duplicate rows and cols
 }
 
 
-function findEmptyColsAndRows(universeMatrix: string[][]) {
+function findEmptyColsAndRows(rowsMatrix: string[][]) {
+  const emptyRows: number[] = []
 
+  const colsMatrix: string[][] = []
+  const emptyCols: number[] = []
 
-  //return [emptyCols, emptyRows]
+  function isEmpty(arr: string[]) {
+    return arr.every(item => item === '.')
+  }
+
+  //fill EMPTY_ROWS array
+  rowsMatrix.forEach((row, rowIndex) => {
+    if (isEmpty(row)) emptyRows.push(rowIndex)
+  })
+
+  //fill colsMatrix
+  rowsMatrix.forEach((row) => {
+    row.forEach((char, charIndex) => {
+      colsMatrix[charIndex].push(char)
+    })
+  })
+
+  //hoping it works
+  colsMatrix.forEach((col, colIndex) => {
+    if (isEmpty(col)) emptyCols.push(colIndex)
+  })
+
+  return [emptyCols, emptyRows]
 }
 
 function simplerUniverse() {
@@ -29,7 +50,9 @@ function simplerUniverse() {
     universeRows = UNIVERSE.split('\r')
   }
 
-  const matrix: string[][] = universeRows.map(row => row.split('').filter(char => char === '.' || char === '#'))
+  const matrix: string[][] = universeRows
+    .map(row => row.split('')
+      .filter(char => char === '.' || char === '#'))
 
   return matrix //8th item should be a galaxy
 }
@@ -40,4 +63,5 @@ function simplerUniverse() {
 // console.log(simplerUniverse().slice(0, 3))
 // console.table(simplerUniverse()[0])
 // console.log(new Set(UNIVERSE))
-console.table(simplerUniverse()[0])
+
+console.log(findEmptyColsAndRows(simplerUniverse()))

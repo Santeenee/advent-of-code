@@ -1,5 +1,9 @@
 # SUBMISSION
 
+## CHALLENGE
+
+<https://adventofcode.com/2023/day/11>
+
 > "Figure out the sum of the lengths of
 > the shortest path between every pair of galaxies"
 >
@@ -36,8 +40,7 @@ const pairs = [[g\*1, g\*2], [g\*1, g\*3], [g\*2, g\*3], etc.]
 
 ## UNDERSTADING
 
-each row is exactly 141 characters
-
-break line is OS dependent.
-
-newline or carriage return knowledge thanks to [this stackoverflow answer](https://stackoverflow.com/questions/1761051/difference-between-n-and-r#answer-1761086)
+- each row is exactly 141 characters
+- break line is OS dependent
+- newline or carriage return knowledge thanks to [this stackoverflow answer](https://stackoverflow.com/questions/1761051/difference-between-n-and-r#answer-1761086)
+- input.txt is a square?
