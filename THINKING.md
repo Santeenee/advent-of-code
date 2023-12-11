@@ -1,4 +1,4 @@
-# SUBMISSION:
+# SUBMISSION
 
 > "Figure out the sum of the lengths of
 > the shortest path between every pair of galaxies"
