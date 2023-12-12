@@ -29,9 +29,9 @@
   - find empty rows
     - if each char in row is "." then store pointer of row.
   - same for columns
-- 🔳 duplicate empty rows and cols
+- ✅ duplicate empty rows and cols
 
-**B.** pair of galaxies -->
+**B.** generate pairs of galaxies -->
 const pairs = [[g\*1, g\*2], [g\*1, g\*3], [g\*2, g\*3], etc.]
 
 **C.** find shortes path
@@ -44,3 +44,4 @@ const pairs = [[g\*1, g\*2], [g\*1, g\*3], [g\*2, g\*3], etc.]
 - break line is OS dependent
 - newline or carriage return knowledge thanks to [this stackoverflow answer](https://stackoverflow.com/questions/1761051/difference-between-n-and-r#answer-1761086)
 - input.txt is a square?
+- cloning a matrix is not that easy (slices upon slices of arrays... ok js 🌚)
