@@ -2,6 +2,8 @@
 
 Just trying to solve ONE of those numerous Advent of Code challenges.
 
+_Each git branch is a challenge_
+
 ### Credits?
 
 Huge thanks to [Hyperplexed in this video](https://youtu.be/G9207EJySaA?si=aM-FxiBY6gzv_z4X) for the inspo. 
