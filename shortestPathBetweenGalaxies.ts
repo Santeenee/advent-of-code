@@ -9,17 +9,42 @@ const [COLS_UNIVERSE, ROWS_UNIVERSE] = simplerUniverse()
 
 const [EMPTY_COLS, EMPTY_ROWS] = findEmptyColsAndRows()
 
-function expandTheUniverse(universeMatrix: string[][]) {
-  //TODO duplicate EMPTY_ROWS and EMPTY_COLS
+const EXPANDED_UNIVERSE = expandTheUniverse()
+
+
+function expandTheUniverse() {
+
+  //because splice() mutates arrays in place, we need to have a copy
+  const universeInExpansion = ROWS_UNIVERSE.map(row => row.slice()).slice()
+
+  //* DUPLICATE EMPTY COLUMNS
+  let colOffset = 1
+  for (let nCol = 0; nCol < EMPTY_COLS.length; nCol++) {
+    universeInExpansion.forEach(row => {
+      row.splice(EMPTY_COLS[nCol] + colOffset, 0, EMPTY_SPACE)
+    })
+    colOffset++
+  }
+
+  const emptyRow = universeInExpansion[EMPTY_ROWS[0]]
+
+  //* DUPLICATE EMPTY ROWS
+  let rowOffset = 1
+  for (let nRow = 0; nRow < EMPTY_ROWS.length; nRow++) {
+    universeInExpansion.splice(EMPTY_ROWS[nRow] + rowOffset, 0, emptyRow)
+    rowOffset++
+  }
+
+  return universeInExpansion
+}
+
+function isEmpty(arr: string[]) {
+  return arr.every(item => item === EMPTY_SPACE)
 }
 
 function findEmptyColsAndRows() {
   const emptyRows: number[] = []
   const emptyCols: number[] = []
-
-  function isEmpty(arr: string[]) {
-    return arr.every(item => item === EMPTY_SPACE)
-  }
 
   ROWS_UNIVERSE.forEach((row, rowIndex) => {
     if (isEmpty(row)) emptyRows.push(rowIndex)
@@ -47,7 +72,6 @@ function simplerUniverse() {
       .filter(char => char === EMPTY_SPACE || char === GALAXY))
 
   const colsMatrix: string[][] = []
-
   rowsMatrix.forEach((row) => {
     row.forEach((char, charIndex) => {
       colsMatrix[charIndex] ?
@@ -66,7 +90,24 @@ function simplerUniverse() {
 // console.table(simplerUniverse()[0])
 // console.log(new Set(UNIVERSE))
 
-console.log(EMPTY_COLS)
-console.log(EMPTY_ROWS)
+console.log('EMPTY COLS INDEXES');
+console.log(EMPTY_COLS.join() + '\n')
 
+console.log('EMPTY ROWS INDEXES');
+console.log(EMPTY_ROWS.join() + '\n')
 
+// console.log('empty cols')
+// // console.table(EXPANDED_UNIVERSE)
+// EMPTY_COLS.forEach(colIndex => {
+//   const currCol: string[] = [""]
+//   EXPANDED_UNIVERSE.forEach(row => {
+//     const indess = colIndex + 1
+//     currCol.push(row[indess])
+//   })
+//   console.log(currCol.join(""))
+// })
+// console.table(EXPANDED_UNIVERSE[0])
+
+// console.log(UNIVERSE)
+console.table(ROWS_UNIVERSE.map(row => row.join('')))
+console.table(EXPANDED_UNIVERSE.map(row => row.join(''))) //+8 rows, +11 cols
