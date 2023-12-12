@@ -10,9 +10,8 @@ const [COLS_UNIVERSE, ROWS_UNIVERSE] = simplerUniverse()
 const [EMPTY_COLS, EMPTY_ROWS] = findEmptyColsAndRows()
 
 function expandTheUniverse(universeMatrix: string[][]) {
-  //TODO duplicate rows and cols
+  //TODO duplicate EMPTY_ROWS and EMPTY_COLS
 }
-
 
 function findEmptyColsAndRows() {
   const emptyRows: number[] = []
