@@ -11,6 +11,8 @@ const [EMPTY_COLS, EMPTY_ROWS] = findEmptyColsAndRows()
 
 const EXPANDED_UNIVERSE = expandTheUniverse()
 
+//TODO const GALAXY_PAIRS = generateGalaxyPairs()
+
 
 function expandTheUniverse() {
 
