@@ -25,11 +25,11 @@
 **A.** expand the universe()
 
 - ✅ convert string universe in matrix universe
-- find empty cols and rows
+- ✅ find empty cols and rows
   - find empty rows
     - if each char in row is "." then store pointer of row.
   - same for columns
-- duplicate empty rows and cols
+- 🔳 duplicate empty rows and cols
 
 **B.** pair of galaxies -->
 const pairs = [[g\*1, g\*2], [g\*1, g\*3], [g\*2, g\*3], etc.]

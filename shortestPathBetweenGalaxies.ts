@@ -5,37 +5,28 @@ const UNIVERSE = fs.readFileSync('./input.txt').toString()
 const EMPTY_SPACE = "."
 const GALAXY = "#" //change # into a number
 
+const [COLS_UNIVERSE, ROWS_UNIVERSE] = simplerUniverse()
+
+const [EMPTY_COLS, EMPTY_ROWS] = findEmptyColsAndRows()
+
 function expandTheUniverse(universeMatrix: string[][]) {
   //TODO duplicate rows and cols
 }
 
 
-function findEmptyColsAndRows(rowsMatrix: string[][]) {
+function findEmptyColsAndRows() {
   const emptyRows: number[] = []
-
-  const colsMatrix: string[][] = []
   const emptyCols: number[] = []
 
   function isEmpty(arr: string[]) {
-    return arr.every(item => item === '.')
+    return arr.every(item => item === EMPTY_SPACE)
   }
 
-  //fill EMPTY_ROWS array
-  rowsMatrix.forEach((row, rowIndex) => {
+  ROWS_UNIVERSE.forEach((row, rowIndex) => {
     if (isEmpty(row)) emptyRows.push(rowIndex)
   })
 
-  //fill colsMatrix
-  rowsMatrix.forEach((row) => {
-    row.forEach((char, charIndex) => {
-      colsMatrix[charIndex] ?
-        colsMatrix[charIndex].push(char) :
-        colsMatrix[charIndex] = [char]
-    })
-  })
-
-  //hoping it works
-  colsMatrix.forEach((col, colIndex) => {
+  COLS_UNIVERSE.forEach((col, colIndex) => {
     if (isEmpty(col)) emptyCols.push(colIndex)
   })
 
@@ -43,7 +34,7 @@ function findEmptyColsAndRows(rowsMatrix: string[][]) {
 }
 
 function simplerUniverse() {
-  //operating system indipendent approach
+  //operating system indipendent approach to remove newlines
   let universeRows: string[] = []
 
   if (UNIVERSE.includes('\n')) {
@@ -52,11 +43,21 @@ function simplerUniverse() {
     universeRows = UNIVERSE.split('\r')
   }
 
-  const matrix: string[][] = universeRows
+  const rowsMatrix: string[][] = universeRows
     .map(row => row.split('')
-      .filter(char => char === '.' || char === '#'))
+      .filter(char => char === EMPTY_SPACE || char === GALAXY))
 
-  return matrix //8th item should be a galaxy
+  const colsMatrix: string[][] = []
+
+  rowsMatrix.forEach((row) => {
+    row.forEach((char, charIndex) => {
+      colsMatrix[charIndex] ?
+        colsMatrix[charIndex].push(char) :
+        colsMatrix[charIndex] = [char]
+    })
+  })
+
+  return [colsMatrix, rowsMatrix] //rowsMatrix[7] should be a #
 }
 
 
@@ -66,4 +67,7 @@ function simplerUniverse() {
 // console.table(simplerUniverse()[0])
 // console.log(new Set(UNIVERSE))
 
-console.log(findEmptyColsAndRows(simplerUniverse()))
+console.log(EMPTY_COLS)
+console.log(EMPTY_ROWS)
+
+
