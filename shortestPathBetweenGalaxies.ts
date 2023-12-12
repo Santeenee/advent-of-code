@@ -28,7 +28,9 @@ function findEmptyColsAndRows(rowsMatrix: string[][]) {
   //fill colsMatrix
   rowsMatrix.forEach((row) => {
     row.forEach((char, charIndex) => {
-      colsMatrix[charIndex].push(char)
+      colsMatrix[charIndex] ?
+        colsMatrix[charIndex].push(char) :
+        colsMatrix[charIndex] = [char]
     })
   })
 
