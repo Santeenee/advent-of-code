@@ -2,6 +2,8 @@
 
 Just trying to solve ONE of those numerous Advent of Code challenges.
 
+install packages with `pnpm i` or `npm i`
+
 start dev server with `pnpm dev` or `npm run dev`
 
 ### Credits?
