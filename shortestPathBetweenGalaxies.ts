@@ -1,6 +1,7 @@
 import fs from 'fs'
 
 const UNIVERSE = fs.readFileSync('./input.txt').toString()
+// const UNIVERSE = '#...\n....\n....\n...#';
 
 const EMPTY_SPACE = "."
 const GALAXY = "#" //change # into a number
@@ -11,7 +12,7 @@ const [EMPTY_COLS, EMPTY_ROWS] = findEmptyColsAndRows()
 
 const EXPANDED_UNIVERSE = expandTheUniverse()
 
-//TODO const GALAXY_PAIRS = generateGalaxyPairs()
+const RESULT = sumDistances()
 
 
 function expandTheUniverse() {
@@ -40,8 +41,8 @@ function expandTheUniverse() {
   return universeInExpansion
 }
 
-function isEmpty(arr: string[]) {
-  return arr.every(item => item === EMPTY_SPACE)
+function isEmpty(row: string[]) {
+  return row.every(char => char !== GALAXY)
 }
 
 function findEmptyColsAndRows() {
@@ -85,31 +86,72 @@ function simplerUniverse() {
   return [colsMatrix, rowsMatrix] //rowsMatrix[7] should be a #
 }
 
+function sumDistances() {
+  const coordinates: number[][] = []
+  const distances: number[] = []
+
+
+  // * NUMERATE GALAXIES
+  // let galaxyCount = 0
+  // EXPANDED_UNIVERSE.forEach(row => {
+  //   row.forEach((char, nChar) => {
+  //     if (char === GALAXY) {
+  //       row[nChar] = String.fromCharCode(galaxyCount + 97) // '#' becomes a char
+  //       galaxyCount++
+  //     }
+  //   })
+  // })
+
+  // * FIND & COLLECT PAIRS
+  // EXPANDED_UNIVERSE.forEach(row => {
+  //   row.forEach(char => {
+
+  //   })
+  // })
+
+  //* store pointers of galaxies
+  EXPANDED_UNIVERSE.forEach((row, nRow) => {
+    row.forEach((char, nChar) => {
+      if (char === GALAXY) coordinates.push([nRow, nChar])
+    })
+  })
+
+  console.log(coordinates)
+
+  for (let aGalaxy = 0; aGalaxy < coordinates.length - 1; aGalaxy++) {
+    for (let bGalaxy = aGalaxy + 1; bGalaxy < coordinates.length; bGalaxy++) {
+      const a = coordinates[aGalaxy]
+      const b = coordinates[bGalaxy]
+
+      //! it doesn't work well...
+      // const distance = Math.ceil(Math.sqrt((b[0] ** 2 - a[0] ** 2) + (b[1] ** 2 - a[1] ** 2)))
+      // const distance = Math.ceil(Math.hypot((b[0] - a[0], b[1] - a[1])))
+
+      const distance = getDistance(a, b)
+
+      distances.push(distance)
+      console.log(`getDistance(${b}, ${a}) = ${distance}`)
+    }
+  }
+
+  return distances.reduce((a, b) => a + b)
+}
+
+function getDistance([aX, aY]: number[], [bX, bY]: number[]) {
+  //no... cartesian distance isn't enough
+  //must travel non diagonally... HOW
+
+  const distance = 0
+
+  //TODO... think about it
+
+  return distance
+}
+
 
 // * TESTING WITH LOGS :)
-// console.log(UNIVERSE)
-// console.log(simplerUniverse().slice(0, 3))
-// console.table(simplerUniverse()[0])
-// console.log(new Set(UNIVERSE))
 
-console.log('EMPTY COLS INDEXES');
-console.log(EMPTY_COLS.join() + '\n')
-
-console.log('EMPTY ROWS INDEXES');
-console.log(EMPTY_ROWS.join() + '\n')
-
-// console.log('empty cols')
-// // console.table(EXPANDED_UNIVERSE)
-// EMPTY_COLS.forEach(colIndex => {
-//   const currCol: string[] = [""]
-//   EXPANDED_UNIVERSE.forEach(row => {
-//     const indess = colIndex + 1
-//     currCol.push(row[indess])
-//   })
-//   console.log(currCol.join(""))
-// })
-// console.table(EXPANDED_UNIVERSE[0])
-
-// console.log(UNIVERSE)
 console.table(ROWS_UNIVERSE.map(row => row.join('')))
 console.table(EXPANDED_UNIVERSE.map(row => row.join(''))) //+8 rows, +11 cols
+
+console.table(RESULT)
