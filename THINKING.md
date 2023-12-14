@@ -45,3 +45,5 @@ const pairs = [[g\*1, g\*2], [g\*1, g\*3], [g\*2, g\*3], etc.]
 - newline or carriage return knowledge thanks to [this stackoverflow answer](https://stackoverflow.com/questions/1761051/difference-between-n-and-r#answer-1761086)
 - input.txt is a square?
 - cloning a matrix is not that easy (slices upon slices of arrays... ok js 🌚)
+- cartesian difference doesn't work. why? idk, im not a mathmatician. im dumb. that's it
+- There's a thing called Manhattan distance... interesting [this solved everything](https://stackoverflow.com/a/22544595)

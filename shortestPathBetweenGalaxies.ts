@@ -90,25 +90,6 @@ function sumDistances() {
   const coordinates: number[][] = []
   const distances: number[] = []
 
-
-  // * NUMERATE GALAXIES
-  // let galaxyCount = 0
-  // EXPANDED_UNIVERSE.forEach(row => {
-  //   row.forEach((char, nChar) => {
-  //     if (char === GALAXY) {
-  //       row[nChar] = String.fromCharCode(galaxyCount + 97) // '#' becomes a char
-  //       galaxyCount++
-  //     }
-  //   })
-  // })
-
-  // * FIND & COLLECT PAIRS
-  // EXPANDED_UNIVERSE.forEach(row => {
-  //   row.forEach(char => {
-
-  //   })
-  // })
-
   //* store pointers of galaxies
   EXPANDED_UNIVERSE.forEach((row, nRow) => {
     row.forEach((char, nChar) => {
@@ -127,25 +108,18 @@ function sumDistances() {
       // const distance = Math.ceil(Math.sqrt((b[0] ** 2 - a[0] ** 2) + (b[1] ** 2 - a[1] ** 2)))
       // const distance = Math.ceil(Math.hypot((b[0] - a[0], b[1] - a[1])))
 
-      const distance = getDistance(a, b)
+      const distance = getManhattanDistance(a, b)
 
       distances.push(distance)
-      console.log(`getDistance(${b}, ${a}) = ${distance}`)
+      // console.log(`getManhattanDistance(${b}, ${a}) = ${distance}`)
     }
   }
 
   return distances.reduce((a, b) => a + b)
 }
 
-function getDistance([aX, aY]: number[], [bX, bY]: number[]) {
-  //no... cartesian distance isn't enough
-  //must travel non diagonally... HOW
-
-  const distance = 0
-
-  //TODO... think about it
-
-  return distance
+function getManhattanDistance([aX, aY]: number[], [bX, bY]: number[]) {
+  return Math.abs(bX - aX) + Math.abs(bY - aY)
 }
 
 
@@ -154,4 +128,4 @@ function getDistance([aX, aY]: number[], [bX, bY]: number[]) {
 console.table(ROWS_UNIVERSE.map(row => row.join('')))
 console.table(EXPANDED_UNIVERSE.map(row => row.join(''))) //+8 rows, +11 cols
 
-console.table(RESULT)
+console.log(`\n\nThe sum af all distances among galaxies is ${RESULT} \\(@^0^@)/ \n\n`)
