@@ -1,7 +1,7 @@
 import fs from 'fs'
 
-// const UNIVERSE = fs.readFileSync('./input.txt').toString()
-const UNIVERSE = '...#......\n.......#..\n#.........\n..........\n......#...\n.#........\n.........#\n..........\n.......#..\n#...#.....';
+const UNIVERSE = fs.readFileSync('./input.txt').toString()
+// const UNIVERSE = '...#......\n.......#..\n#.........\n..........\n......#...\n.#........\n.........#\n..........\n.......#..\n#...#.....';
 
 const EMPTY_SPACE = "."
 const GALAXY = "#" //change # into a number
@@ -10,51 +10,32 @@ const [COLS_UNIVERSE, ROWS_UNIVERSE] = simplerUniverse(UNIVERSE)
 
 const [EMPTY_COLS, EMPTY_ROWS] = findEmptyColsAndRows()
 
-// const EXPANDED_UNIVERSE = expandTheUniverse()
+const GALAXIES = getGalaxies(ROWS_UNIVERSE)
 
-// const RESULT = sumDistances(EXPANDED_UNIVERSE)
-
-// end part 1, start part 2
-
-const DINAMIC_EXPANDED_UNIVERSE = expandTheUniverse(1_000_000)
-
-const RESULT_2 = sumDistances(DINAMIC_EXPANDED_UNIVERSE)
+const EXPANDED_GALAXIES_1mil = smarterUniverseExpansion(1_000_000, GALAXIES)
+const EXPANDED_GALAXIES_2 = smarterUniverseExpansion(2, GALAXIES)
+//no actual need to expand the universe!
+const RESULT = sumDistances(EXPANDED_GALAXIES_2)
+const RESULT_2 = sumDistances(EXPANDED_GALAXIES_1mil)
 
 // -------------------------------------------------------------
 
+function smarterUniverseExpansion(expansionRate = 2, galaxiesMatrix: number[][]) {
+  //take 1 galaxy at a time, see which empty cols are left of that galaxy.
+  //add 999999 * nEMTPY_COLUMNS to x galaxy coordinate
 
-function expandTheUniverse(expansionRate = 2) {
-  const linesToAdd = expansionRate - 1
+  //deep copy galaxiesMatrix
+  const galaxies = galaxiesMatrix.map(item => item.slice()).slice()
 
-  //because splice() mutates arrays in place, we need to have a copy
-  const universeInExpansion = ROWS_UNIVERSE.map(row => row.slice()).slice()
+  galaxies.forEach(([x, y], nGalaxy) => {
+    const nFilteredEmptyCols = EMPTY_COLS.filter(col => col < x).length
+    const nFilteredEmptyRows = EMPTY_ROWS.filter(row => row < y).length
 
-  //* EXPAND EMPTY COLUMNS
-  const emptySpacesToAdd = '.'.repeat(linesToAdd)
-  let colOffset = 0
+    galaxies[nGalaxy][0] += ((expansionRate - 1) * nFilteredEmptyCols)
+    galaxies[nGalaxy][1] += ((expansionRate - 1) * nFilteredEmptyRows)
+  })
 
-  for (let nCol = 0; nCol < EMPTY_COLS.length; nCol++) {
-    universeInExpansion.forEach(row => {
-      row.splice(EMPTY_COLS[nCol] + 1 + colOffset, 0, ...emptySpacesToAdd)
-    })
-    colOffset += linesToAdd
-  }
-
-  //* EXPAND EMPTY ROWS
-  const emptyRow = universeInExpansion[EMPTY_ROWS[0]]
-
-  const emptyRowsToAdd: string[][] = []
-
-  for (let i = 0; i < linesToAdd; i++)
-    emptyRowsToAdd.push(emptyRow)
-
-  let rowOffset = 0
-  for (let nRow = 0; nRow < EMPTY_ROWS.length; nRow++) {
-    universeInExpansion.splice(EMPTY_ROWS[nRow] + 1 + rowOffset, 0, ...emptyRowsToAdd)
-    rowOffset += linesToAdd
-  }
-
-  return universeInExpansion
+  return galaxies
 }
 
 function isEmpty(row: string[]) {
@@ -102,21 +83,13 @@ function simplerUniverse(universe: string) {
   return [colsMatrix, rowsMatrix] //rowsMatrix[7] should be a #
 }
 
-function sumDistances(complete_universe: string[][]) {
-  const coordinates: number[][] = []
+function sumDistances(galaxies: number[][]) {
   const distances: number[] = []
 
-  //* store pointers of galaxies
-  complete_universe.forEach((row, nRow) => {
-    row.forEach((char, nChar) => {
-      if (char === GALAXY) coordinates.push([nRow, nChar])
-    })
-  })
-
-  for (let aGalaxy = 0; aGalaxy < coordinates.length - 1; aGalaxy++) {
-    for (let bGalaxy = aGalaxy + 1; bGalaxy < coordinates.length; bGalaxy++) {
-      const a = coordinates[aGalaxy]
-      const b = coordinates[bGalaxy]
+  for (let aGalaxy = 0; aGalaxy < galaxies.length - 1; aGalaxy++) {
+    for (let bGalaxy = aGalaxy + 1; bGalaxy < galaxies.length; bGalaxy++) {
+      const a = galaxies[aGalaxy]
+      const b = galaxies[bGalaxy]
 
       //! it doesn't work well...
       // const distance = Math.ceil(Math.sqrt((b[0] ** 2 - a[0] ** 2) + (b[1] ** 2 - a[1] ** 2)))
@@ -132,6 +105,18 @@ function sumDistances(complete_universe: string[][]) {
   return distances.reduce((a, b) => a + b)
 }
 
+function getGalaxies(a_universe: string[][]) {
+  const galaxies: number[][] = []
+  //* store pointers of galaxies
+  a_universe.forEach((row, nRow) => {
+    row.forEach((char, nChar) => {
+      if (char === GALAXY) galaxies.push([nChar, nRow])
+    })
+  })
+
+  return galaxies
+}
+
 function getManhattanDistance([aX, aY]: number[], [bX, bY]: number[]) {
   return Math.abs(bX - aX) + Math.abs(bY - aY)
 }
@@ -143,8 +128,8 @@ function getManhattanDistance([aX, aY]: number[], [bX, bY]: number[]) {
 // console.table(EXPANDED_UNIVERSE.map(row => row.join('')))
 // console.table(DINAMIC_EXPANDED_UNIVERSE.map(row => row.join(''))) //+8 rows, +11 cols
 
-// console.log('\nPART 1')
-// console.log(`The sum af all distances among galaxies is ${RESULT} \\(@^0^@)/`)
+console.log('\nPART 1')
+console.log(`The sum af all distances among galaxies is ${RESULT}`)
 
 console.log('\nPART 2')
 console.log(`The sum af all distances among galaxies is ${RESULT_2} \\(@^0^@)/`)
