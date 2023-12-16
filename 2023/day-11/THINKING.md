@@ -55,3 +55,9 @@ const pairs = [[g\*1, g\*2], [g\*1, g\*3], [g\*2, g\*3], etc.]
 - cloning a matrix is not that easy (slices upon slices of arrays... ok js 🌚)
 - cartesian difference doesn't work. why? idk, im not a mathmatician. im dumb. that's it
 - There's a thing called Manhattan distance... interesting. [This solved everything!](https://stackoverflow.com/a/22544595)
+
+## Part 2
+
+now the rows and columns of the 'universe' need to become 1million times larger. How my potato pc is going to handle this? No idea.
+
+technically it works... it just needs to be heavily optimized
