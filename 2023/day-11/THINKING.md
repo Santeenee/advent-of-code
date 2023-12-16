@@ -31,12 +31,20 @@
   - same for columns
 - ✅ duplicate empty rows and cols
 
-**B.** generate pairs of galaxies -->
+**B.**
+
+❌ generate pairs of galaxies -->
 const pairs = [[g\*1, g\*2], [g\*1, g\*3], [g\*2, g\*3], etc.]
 
-**C.** find shortes path
+(didn't need to)
 
-**D.** sum of shortest path
+**C.**
+
+✅ find shortest path (manhattan distance)
+
+**D.**
+
+✅ sum of shortest path (HOF `.reduce()`)
 
 ## UNDERSTADING
 
@@ -46,4 +54,4 @@ const pairs = [[g\*1, g\*2], [g\*1, g\*3], [g\*2, g\*3], etc.]
 - input.txt is a square?
 - cloning a matrix is not that easy (slices upon slices of arrays... ok js 🌚)
 - cartesian difference doesn't work. why? idk, im not a mathmatician. im dumb. that's it
-- There's a thing called Manhattan distance... interesting [this solved everything](https://stackoverflow.com/a/22544595)
+- There's a thing called Manhattan distance... interesting. [This solved everything!](https://stackoverflow.com/a/22544595)

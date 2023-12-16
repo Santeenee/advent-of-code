@@ -2,10 +2,6 @@
 
 Just trying to solve ONE of those numerous Advent of Code challenges.
 
-install packages with `pnpm i` or `npm i`
-
-start dev server with `pnpm dev` or `npm run dev`
-
 ## Credits?
 
 Huge thanks to [Hyperplexed in this video](https://youtu.be/G9207EJySaA?si=aM-FxiBY6gzv_z4X) for the inspo.
