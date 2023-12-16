@@ -1,4 +1,4 @@
-# Advent Of Code 2023
+# Advent Of Code
 
 Just trying to solve ONE of those numerous Advent of Code challenges.
 
