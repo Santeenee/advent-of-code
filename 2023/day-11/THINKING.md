@@ -61,3 +61,7 @@ const pairs = [[g\*1, g\*2], [g\*1, g\*3], [g\*2, g\*3], etc.]
 now the rows and columns of the 'universe' need to become 1million times larger. How my potato pc is going to handle this? No idea.
 
 technically it works... it just needs to be heavily optimized
+
+anyway. I found a possible solution which isn't such resource intesive
+
+thanks to [this reddit post](https://www.reddit.com/r/adventofcode/comments/18g5vl7/2023_day_11_part_2_expanding_universe/?utm_source=share&utm_medium=web2x&context=3)
