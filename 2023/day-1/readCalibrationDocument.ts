@@ -48,7 +48,7 @@ const calibratedSum = splitNewLine(modifiedDoc)
 function convertWordsToNumbers(line: string) {
 	const arrLine = line.split('')
 
-	console.log(arrLine.join(''), '-')
+	// console.log(arrLine.join(''), '-')
 	for (const [numWord, num] of numMap) {
 		const wordIndexes: number[] = []
 
