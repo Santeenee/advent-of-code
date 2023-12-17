@@ -1,28 +1,40 @@
 import fs from 'fs'
 import splitNewLine from '../../utils/splitNewLine'
 
-// const modifiedDoc = fs.readFileSync('input.txt').toString()
+const modifiedDoc = fs.readFileSync('input.txt').toString()
 // const modifiedDoc =
-// 	'tsxbfgzhjr55seventhreesxnnjhninefive\nnine36five1onefive\neighteightwoneoneight'
+// 	'tsxbfgzhjr55seventhreesxnnjhninefive\nnine36five1onefive\neighteightwoneoneightwoneight' //!first line doesn't work... why?
 
 // const modifiedDoc = '1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet'
-const modifiedDoc =
-	'two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen'
+// const modifiedDoc =
+// 	'two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen' //281
+
+// const modifiedDoc = 'tsxbfgzhjr55seventhreesxnnjhninefive'
 
 // why these weird combinations?
 // If you have 'eightwo', for some reason, it is supposed to return 82
 // so, appending a letter might fix it... let's try
-// example: 'eighthree' -> '8t'+'hree' -> '8three' -> '83'
+// example: 'eighthree' -> 'eightthree' -> 'eight3' -> '83'
 const numMap = new Map<string, string>([
-	['one', 'o1e'],
-	['two', 't2o'],
-	['three', 't3e'],
-	['four', 'f4r'], //random char M
-	['five', 'f5e'],
-	['six', 's6x'],
-	['seven', 's7n'],
-	['eight', 'e8t'],
-	['nine', 'n9e'],
+	//duplicate shared character
+	['oneight', 'oneeight'],
+	['twone', 'twoone'],
+	['threeight', 'threeeight'],
+	['fiveight', 'fiveeight'],
+	['sevenine', 'sevennine'],
+	['eightwo', 'eighttwo'],
+	['eighthree', 'eightthree'],
+	['nineight', 'nineeight'],
+	//convert string in num
+	['one', '1'],
+	['two', '2'],
+	['three', '3'],
+	['four', '4'],
+	['five', '5'],
+	['six', '6'],
+	['seven', '7'],
+	['eight', '8'],
+	['nine', '9'],
 ])
 
 //abusing higher order functions
@@ -36,12 +48,14 @@ const calibratedSum = splitNewLine(modifiedDoc)
 function convertWordsToNumbers(line: string) {
 	const arrLine = line.split('')
 
-	// console.log(arrLine.join(''), '-')
+	console.log(arrLine.join(''), '-')
 	for (const [numWord, num] of numMap) {
 		const wordIndexes: number[] = []
+
+		//number of occurrences of a word in the line
 		for (let i = 0; i < arrLine.length; i++) {
-			if (line.slice(i, i + numWord.length) === numWord) {
-				wordIndexes.push(i) //! wordIndexes aren't updated real time
+			if (arrLine.join('').slice(i, i + numWord.length) === numWord) {
+				wordIndexes.push(i)
 			}
 		}
 
@@ -53,7 +67,6 @@ function convertWordsToNumbers(line: string) {
 
 				// replace word with number
 				arrLine.splice(foundWordIndex, numWord.length, ...num)
-				// console.log(arrLine.join(''))
 				offset = foundWordIndex + 1
 			}
 		}
@@ -63,7 +76,4 @@ function convertWordsToNumbers(line: string) {
 	return arrLine.join('')
 }
 
-// console.table(splitNewLine(modifiedDoc))
 console.table(calibratedSum)
-// console.table(calibratedSum.slice(0, 5))
-// console.table(calibratedSum.slice(-1))
