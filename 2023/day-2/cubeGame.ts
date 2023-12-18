@@ -124,7 +124,7 @@ const result = [...new Set(gameIds)].reduce((a, b) => a + b) //part 1
 const result_2 = gamePowers.reduce((a, b) => a + b)
 
 // console.log(gameIds)
-// console.log(result)
+console.log(result)
 // console.log('Game powers array')
 // console.table(gamePowers)
 console.table(result_2)
