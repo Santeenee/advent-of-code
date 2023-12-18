@@ -1,4 +1,3 @@
-// TODO solve the AoC challenge of the day
 import fs from 'fs'
 import splitNewLine from '../../utils/splitNewLine'
 
@@ -22,7 +21,11 @@ type Part = {
 	cols: { startCol: number; endCol: number }
 }
 
-type Symbol = { char: string; row: number; col: number }
+type Symbol = {
+	char: string
+	row: number
+	col: number
+}
 
 // * DATA
 const PARTS: Part[] = []
@@ -30,12 +33,11 @@ const SYMBOLS: Symbol[] = []
 
 const numbersRegexp = /\d+/g
 const symbolRegexp = /(?!\.)\W/g
+const onlySymbolRegexp = /^(?!\.)\W$/
 
-// * LOOPIN' FOREVAH
+// * CODE
+// get all PARTS and SYMBOLS
 input.forEach((line, nLine) => {
-	const numsIndexesArr: number[] = []
-	let nCount = 0
-
 	const numbers = [...line.matchAll(numbersRegexp)]
 	numbers.forEach(matched => {
 		if (matched.length > 0) {
@@ -62,11 +64,55 @@ input.forEach((line, nLine) => {
 	})
 })
 
-console.log('\nINPUT')
-console.table(input)
+//remove non engine parts
+PARTS.forEach((part, nPart) => {
+	const { row, cols } = part
+	let isEnginePart = false
 
-console.log('\nPARTS')
-console.table(PARTS)
+	//check all surroundings
+	//check above
+	//check left and right
+	//check below
+	//if none of these 4, then splice(x, 1)
 
-console.log('\nSYMBOLS')
-console.table(SYMBOLS)
+	//check left
+	if (onlySymbolRegexp.test(input[row][cols.startCol - 1])) {
+		isEnginePart = true
+	}
+	//check right
+	if (onlySymbolRegexp.test(input[row][cols.endCol + 1])) {
+		isEnginePart = true
+	}
+	//check above and below
+	for (let nChar = cols.startCol - 1; nChar <= cols.endCol + 1; nChar++) {
+		let charAbove = '.'
+		let charBelow = '.'
+
+		if (input[row - 1]) charAbove = input[row - 1][nChar]
+		if (input[row + 1]) charBelow = input[row + 1][nChar]
+
+		if (onlySymbolRegexp.test(charAbove)) isEnginePart = true
+		if (onlySymbolRegexp.test(charBelow)) isEnginePart = true
+	}
+
+	//DELETE part because it's not an engine part
+	if (!isEnginePart) {
+		// console.log('Non engine part', part)
+		PARTS.splice(nPart, 1)
+	}
+})
+
+const RESULT = PARTS.map(part => part.num).reduce((a, b) => a + b)
+
+if (isDemo) {
+	console.log('\nINPUT')
+	console.table(input)
+
+	console.log('\nPARTS')
+	console.table(PARTS)
+
+	console.log('\nSYMBOLS')
+	console.table(SYMBOLS)
+}
+
+console.log('\nAll engine parts combined make this number:', RESULT)
