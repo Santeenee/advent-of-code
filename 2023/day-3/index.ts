@@ -2,7 +2,7 @@ import fs from 'fs'
 import splitNewLine from '../../utils/splitNewLine'
 
 // -----------------
-const isDemo = true
+const isDemo = false
 // -----------------
 
 let input: string[] = []
@@ -65,7 +65,9 @@ input.forEach((line, nLine) => {
 })
 
 //remove non engine parts
-PARTS.forEach((part, nPart) => {
+for (let nPart = 0; nPart < PARTS.length; nPart++) {
+	const part = PARTS[nPart]
+
 	const { row, cols } = part
 	let isEnginePart = false
 
@@ -97,22 +99,23 @@ PARTS.forEach((part, nPart) => {
 
 	//DELETE part because it's not an engine part
 	if (!isEnginePart) {
-		// console.log('Non engine part', part)
+		console.log('Non engine part', part)
 		PARTS.splice(nPart, 1)
+		nPart--
 	}
-})
+}
 
 const RESULT = PARTS.map(part => part.num).reduce((a, b) => a + b)
 
-if (isDemo) {
-	console.log('\nINPUT')
-	console.table(input)
+console.log('\nINPUT')
+console.table(isDemo ? input : input.slice(0, 20))
 
-	console.log('\nPARTS')
-	console.table(PARTS)
+console.log('\nPARTS')
+console.table(isDemo ? PARTS : PARTS.slice(0, 20))
 
-	console.log('\nSYMBOLS')
-	console.table(SYMBOLS)
-}
+console.log('\nSYMBOLS')
+console.table(isDemo ? SYMBOLS : SYMBOLS.slice(0, 20))
 
 console.log('\nAll engine parts combined make this number:', RESULT)
+
+//564199 too high
