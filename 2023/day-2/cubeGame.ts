@@ -26,15 +26,22 @@ const ROUND_SEPARATOR = ';'
 const BALL_SEPARATOR = ','
 
 const gameIds: number[] = []
+const gamePowers: number[] = []
 
-console.log(BAG)
+// console.log(BAG)
 
 // function getCubesPerGame(bag) {}
 
 const matrix = input.map(game => game.split(''))
 
 matrix.forEach((game, gameIndex) => {
-	let validGame = true
+	let validGame = true //part 1
+	const minBalls = {
+		red: 0,
+		blue: 0,
+		green: 0,
+	}
+
 	const startGame = game.indexOf(START_CHAR) + 2
 
 	const roundsEndIndexes: number[] = []
@@ -72,19 +79,54 @@ matrix.forEach((game, gameIndex) => {
 			const [num, color] = ballSlice[ball].join('').split(' ')
 
 			Object.entries(BAG).forEach(([bagColor, bagNum]) => {
-				if (bagColor === color && +num > bagNum) {
-					validGame = false
+				if (bagColor === color) {
+					if (+num > bagNum) {
+						validGame = false
+					}
+
+					switch (
+						bagColor //part 2
+					) {
+						case 'red':
+							if (+num > minBalls.red) {
+								minBalls.red = +num
+							}
+							break
+						case 'green':
+							if (+num > minBalls.green) {
+								minBalls.green = +num
+							}
+							break
+						case 'blue':
+							if (+num > minBalls.blue) {
+								minBalls.blue = +num
+							}
+							break
+
+						default:
+							console.error("that shouldn't happen")
+							break
+					}
 				}
 			})
 		}
 		// console.log(ballSlice.map(ball => ball.join('')))
 	})
 	if (validGame) gameIds.push(gameIndex + 1)
+	// console.log()
+	// console.table(minBalls)
+	const gamePower = minBalls.red * minBalls.green * minBalls.blue
+	// console.table(gamePower)
+	gamePowers.push(gamePower)
 })
 
-const result = [...new Set(gameIds)].reduce((a, b) => a + b)
+const result = [...new Set(gameIds)].reduce((a, b) => a + b) //part 1
+const result_2 = gamePowers.reduce((a, b) => a + b)
 
-console.log(gameIds)
-console.log(result)
+// console.log(gameIds)
+// console.log(result)
+// console.log('Game powers array')
+// console.table(gamePowers)
+console.table(result_2)
 // console.log(matrix)
 // console.log(startGame)
