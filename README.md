@@ -2,6 +2,12 @@
 
 Just trying to solve ONE of those numerous Advent of Code challenges.
 
+## Use script to create days
+
+To setup a typescript project for a AoC day
+
+in root dir run `. ./createDay.sh <year> <dayNumber>`
+
 ## Credits?
 
 Huge thanks to [Hyperplexed in this video](https://youtu.be/G9207EJySaA?si=aM-FxiBY6gzv_z4X) for the inspo.
