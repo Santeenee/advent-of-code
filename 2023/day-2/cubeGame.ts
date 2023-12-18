@@ -2,7 +2,7 @@ import fs from 'fs'
 import splitNewLine from '../../utils/splitNewLine'
 
 // -----------------
-const isDemo = true
+const isDemo = false
 // -----------------
 
 let input: string[] = []
