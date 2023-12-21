@@ -2,7 +2,7 @@ import fs from 'fs'
 import splitNewLine from '../../utils/splitNewLine'
 
 // -----------------
-const isDemo = true
+const isDemo = false
 // -----------------
 
 let input: string[] = []
@@ -35,6 +35,7 @@ const SYMBOLS: Symbol[] = []
 const GEAR_PART_NUMS: number[] = []
 
 const numbersRegexp = /\d+/g
+const aNumRegexp = /^\d$/
 const symbolRegexp = /(?!\.)\W/g
 const onlySymbolRegexp = /^(?!\.)\W$/
 
@@ -86,7 +87,7 @@ for (let nPart = 0; nPart < PARTS.length; nPart++) {
 
 	//DELETE part because it's not an engine part
 	if (!enginePart) {
-		console.log('Non engine part', part)
+		// console.log('Non engine part', part)
 		PARTS.splice(nPart, 1)
 		nPart--
 	}
@@ -96,32 +97,35 @@ for (let nPart = 0; nPart < PARTS.length; nPart++) {
 for (let nSymbol = 0; nSymbol < SYMBOLS.length; nSymbol++) {
 	const symbol = SYMBOLS[nSymbol]
 
-	const foundCoord = searchAroundAString(symbol, numbersRegexp, 2)
+	var min = 2
+	const foundCoord = searchAroundAString(symbol, aNumRegexp, min) //at least find two characters :/
 	if (Array.isArray(foundCoord)) {
-		findNumbersGivenOneCoordinate(foundCoord)
+		findNumberGivenOneCoordinate(foundCoord) //at least find two proper numbers and push to the GEAR_PART_NUMS array
 	}
 }
 
-function findNumbersGivenOneCoordinate(foundCoord: Coordinates[]) {
+function findNumberGivenOneCoordinate(foundCoord: Coordinates[]) {
 	if (foundCoord.length > 1) {
-		let samePart = 'A' //random non existing char in input
 		let foundParts: number[] = []
 		PARTS.forEach(part => {
-			const prt = part.num.toString()
+			const charPart = part.num.toString()
 			foundCoord.forEach(coord => {
-				if (prt.includes(coord.char) && prt !== samePart) {
-					if (part.row === coord.row && isInCols(part.cols, coord.col)) {
-						foundParts.push(part.num)
-					}
-					samePart = prt
+				if (
+					charPart.includes(coord.char) &&
+					part.row === coord.row &&
+					isInCols(part.cols, coord.col)
+				) {
+					foundParts.push(part.num)
 				}
 			})
 		})
-		console.table(foundCoord)
-		console.table(foundParts)
-		// process.abort()
-		GEAR_PART_NUMS.push(foundParts.reduce((a, b) => a * b))
-		foundParts = []
+
+		//removes duplicates
+		foundParts = [...new Set(foundParts)]
+		if (foundParts.length >= min) {
+			if (GEAR_PART_NUMS.length > 60) console.log(foundParts)
+			GEAR_PART_NUMS.push(foundParts.reduce((a, b) => a * b))
+		}
 	}
 }
 
@@ -170,14 +174,14 @@ function searchAroundAString(
 		}
 		return foundCoord
 	}
-	return
+	return //handled by Array.isArray(...)
 }
 
 const ENGINE_PARTS_SUM = PARTS.map(part => part.num).reduce((a, b) => a + b) // part 1
 const GEAR_RATIO_SUM = GEAR_PART_NUMS.reduce((a, b) => a + b) // part 2
 
 console.log('\nINPUT')
-console.table(isDemo ? input : input.slice(0, 20))
+console.table(isDemo ? input : input.slice(-20))
 
 // console.log('\nPARTS')
 // console.table(isDemo ? PARTS : PARTS.slice(0, 20))
@@ -185,9 +189,9 @@ console.table(isDemo ? input : input.slice(0, 20))
 // console.log('\nSYMBOLS')
 // console.table(isDemo ? SYMBOLS : SYMBOLS.slice(0, 20))
 
-console.table(isDemo ? GEAR_PART_NUMS : GEAR_PART_NUMS.slice(0, 20))
+console.table(isDemo ? GEAR_PART_NUMS : GEAR_PART_NUMS.slice(-20))
 
 console.log('\nAll engine parts combined make this number:', ENGINE_PARTS_SUM)
 console.log('\nAll gear parts combined make this gear ratio:', GEAR_RATIO_SUM)
 
-//564199 too high
+//88373022 too low (PART 2)
