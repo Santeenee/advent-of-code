@@ -27,16 +27,12 @@ type Symbol = {
 	col: number
 }
 
-type Coordinates = {
-	char: string
-	row: number
-	col: number
-}
+type Coordinates = Symbol
 
 // * DATA
 const PARTS: Part[] = []
 const SYMBOLS: Symbol[] = []
-const GEARS: Coordinates[] = []
+const GEAR_PART_NUMS: number[] = []
 
 const numbersRegexp = /\d+/g
 const symbolRegexp = /(?!\.)\W/g
@@ -101,7 +97,39 @@ for (let nSymbol = 0; nSymbol < SYMBOLS.length; nSymbol++) {
 	const symbol = SYMBOLS[nSymbol]
 
 	const foundCoord = searchAroundAString(symbol, numbersRegexp, 2)
-	if (Array.isArray(foundCoord)) GEARS.push(...foundCoord)
+	if (Array.isArray(foundCoord)) {
+		findNumbersGivenOneCoordinate(foundCoord)
+	}
+}
+
+function findNumbersGivenOneCoordinate(foundCoord: Coordinates[]) {
+	if (foundCoord.length > 1) {
+		let samePart = 'A' //random non existing char in input
+		let foundParts: number[] = []
+		PARTS.forEach(part => {
+			const prt = part.num.toString()
+			foundCoord.forEach(coord => {
+				if (prt.includes(coord.char) && prt !== samePart) {
+					if (part.row === coord.row && isInCols(part.cols, coord.col)) {
+						foundParts.push(part.num)
+					}
+					samePart = prt
+				}
+			})
+		})
+		console.table(foundCoord)
+		console.table(foundParts)
+		// process.abort()
+		GEAR_PART_NUMS.push(foundParts.reduce((a, b) => a * b))
+		foundParts = []
+	}
+}
+
+function isInCols(cols: { startCol: number; endCol: number }, col: number) {
+	if (col >= cols.startCol && col <= cols.endCol) {
+		return true
+	}
+	return false
 }
 
 function searchAroundAString(
@@ -136,8 +164,6 @@ function searchAroundAString(
 			foundCoord.push({ char: charBelow, row: row + 1, col: nChar })
 	}
 
-	//! findNumberSGivenOneCoordinateOMGHOW()
-
 	if (foundCoord.length >= howManyMinimum) {
 		if (howManyMinimum === 1) {
 			return foundCoord[0]
@@ -148,20 +174,20 @@ function searchAroundAString(
 }
 
 const ENGINE_PARTS_SUM = PARTS.map(part => part.num).reduce((a, b) => a + b) // part 1
-const GEAR_RATIO_SUM = GEARS.filter(item => item !== undefined) //! try remove .filter()
-	.map(item => Number(item.char))
-	.reduce((a, b) => a + b) // part 2
+const GEAR_RATIO_SUM = GEAR_PART_NUMS.reduce((a, b) => a + b) // part 2
 
 console.log('\nINPUT')
 console.table(isDemo ? input : input.slice(0, 20))
 
-console.log('\nPARTS')
-console.table(isDemo ? PARTS : PARTS.slice(0, 20))
+// console.log('\nPARTS')
+// console.table(isDemo ? PARTS : PARTS.slice(0, 20))
 
-console.log('\nSYMBOLS')
-console.table(isDemo ? SYMBOLS : SYMBOLS.slice(0, 20))
+// console.log('\nSYMBOLS')
+// console.table(isDemo ? SYMBOLS : SYMBOLS.slice(0, 20))
+
+console.table(isDemo ? GEAR_PART_NUMS : GEAR_PART_NUMS.slice(0, 20))
 
 console.log('\nAll engine parts combined make this number:', ENGINE_PARTS_SUM)
-console.log('\nAll gears combined make this gear ratio:', GEAR_RATIO_SUM)
+console.log('\nAll gear parts combined make this gear ratio:', GEAR_RATIO_SUM)
 
 //564199 too high
