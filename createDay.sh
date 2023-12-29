@@ -1,8 +1,12 @@
 #!/bin/bash
 
-# * run 
-# * '. ./createDay.sh <year> <day number>' 
-# * in root repo directory
+# ------------------------------------------
+# run 
+# '. ./createDay.sh <year> <day number>' 
+# example:
+# '. ./createDay.sh 2023 15'
+# in root repo directory
+# ------------------------------------------
 
 # Check if the correct number of arguments is provided
 if [ "$#" -ne 2 ]; then
