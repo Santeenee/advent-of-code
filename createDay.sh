@@ -43,7 +43,7 @@ pnpm i ts-node
 
 # Add a script to package.json for launching index.ts with --esm using "pnpm dev"
 npm pkg set 'license'='MIT'
-npm pkg set 'scripts.dev'='ts-node --esm index.ts'
+npm pkg set 'scripts.dev'='ts-node index.ts --esm'
 npm pkg delete 'scripts.test'
 
 # create necessary files

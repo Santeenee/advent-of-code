@@ -2,14 +2,13 @@ import fs from 'fs'
 import splitNewLine from '../../utils/splitNewLine'
 
 // -----------------
-const isDemo = false
+const isDemo = true
 // -----------------
 
 let input: string[] = []
 try {
-	isDemo
-		? (input = splitNewLine(fs.readFileSync('demoInput.txt').toString()))
-		: (input = splitNewLine(fs.readFileSync('input.txt').toString()))
+	if (isDemo) input = splitNewLine(fs.readFileSync('demoInput.txt').toString())
+	else input = splitNewLine(fs.readFileSync('input.txt').toString())
 } catch (error) {
 	console.error('error reading input file\n', error)
 }
@@ -43,29 +42,29 @@ const onlySymbolRegexp = /^(?!\.)\W$/
 // get all PARTS and SYMBOLS
 input.forEach((line, nLine) => {
 	const numbers = [...line.matchAll(numbersRegexp)]
-	numbers.forEach(matched => {
-		if (matched.length > 0) {
+	for (const matched of numbers) {
+		if (matched.length > 0 && matched.index && matched.index >= 0) {
 			PARTS.push({
 				num: +matched[0],
 				row: nLine,
 				cols: {
-					startCol: matched['index']!,
-					endCol: matched['index']! + matched[0].length - 1,
+					startCol: matched.index,
+					endCol: matched.index + matched[0].length - 1,
 				},
 			})
 		}
-	})
+	}
 
 	const symbols = [...line.matchAll(symbolRegexp)]
-	symbols.forEach(matched => {
-		if (matched.length > 0) {
+	for (const matched of symbols) {
+		if (matched.length > 0 && matched.index && matched.index >= 0) {
 			SYMBOLS.push({
 				char: matched[0],
 				row: nLine,
-				col: matched['index']!,
+				col: matched.index,
 			})
 		}
-	})
+	}
 })
 
 //remove non engine parts
@@ -97,6 +96,8 @@ for (let nPart = 0; nPart < PARTS.length; nPart++) {
 for (let nSymbol = 0; nSymbol < SYMBOLS.length; nSymbol++) {
 	const symbol = SYMBOLS[nSymbol]
 
+	// biome-ignore lint/style/noVar: <explanation>
+	// biome-ignore lint/correctness/noInnerDeclarations: <explanation>
 	var min = 2
 	const foundCoord = searchAroundAString(symbol, aNumRegexp, min) //at least find two characters :/
 	if (Array.isArray(foundCoord)) {
@@ -107,9 +108,10 @@ for (let nSymbol = 0; nSymbol < SYMBOLS.length; nSymbol++) {
 function findNumberGivenOneCoordinate(foundCoord: Coordinates[]) {
 	if (foundCoord.length > 1) {
 		let foundParts: number[] = []
-		PARTS.forEach(part => {
+
+		for (const part of PARTS) {
 			const charPart = part.num.toString()
-			foundCoord.forEach(coord => {
+			for (const coord of foundCoord) {
 				if (
 					charPart.includes(coord.char) &&
 					part.row === coord.row &&
@@ -117,8 +119,8 @@ function findNumberGivenOneCoordinate(foundCoord: Coordinates[]) {
 				) {
 					foundParts.push(part.num)
 				}
-			})
-		})
+			}
+		}
 
 		//removes duplicates
 		foundParts = [...new Set(foundParts)]
@@ -142,7 +144,7 @@ function searchAroundAString(
 	howManyMinimum = 1
 ) {
 	const { char, row, col } = coord
-	let foundCoord: Coordinates[] = []
+	const foundCoord: Coordinates[] = []
 	const endCol = col + char.length - 1
 
 	//check left
