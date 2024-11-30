@@ -1,6 +1,6 @@
 # Advent Of Code
 
-Just trying to solve ONE of those numerous Advent of Code challenges.
+Coding for fun, using Advent of Code as an excuse to code.
 
 ## Use script to create days
 
