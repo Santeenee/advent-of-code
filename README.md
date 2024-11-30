@@ -2,7 +2,13 @@
 
 Coding for fun, using Advent of Code as an excuse to code.
 
-## Use script to create days
+## 2024
+
+...
+
+## 2023
+
+### Use script to create days
 
 To setup a typescript project for a AoC day
 
