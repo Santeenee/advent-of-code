@@ -32,10 +32,7 @@ class Program
       totalSum += sum;
     }
 
-    Console.WriteLine(String.Join("; ", leftList));
-    Console.WriteLine(String.Join("; ", rightList));
     Console.WriteLine("The total sum is: " + totalSum);
-    // leftList.ForEach(Console.Write);
   }
 
   public static int getNumInLine(string line, bool fromEnd)
