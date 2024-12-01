@@ -11,7 +11,7 @@ class Program
   static void Main(string[] args)
   {
     Console.WriteLine("--------------\nGet sum of pairs\n");
-    InputReader reader = new(false);
+    InputReader reader = new("./input.txt");
 
     foreach (string line in reader.InputString)
     {
@@ -27,12 +27,37 @@ class Program
 
     for (int i = 0; i < leftList.Count; i++)
     {
-      int sum = leftList[i] - rightList[i];
-      sum = Math.Abs(sum);
-      totalSum += sum;
+      // PART 01
+      /*
+        int sum = leftList[i] - rightList[i];
+        sum = Math.Abs(sum);
+        totalSum += sum;
+      */
+
+      // PART 02
+      int times = howManyTimes(leftList[i], rightList);
+      int multiplication = leftList[i] * times;
+
+      totalSum += multiplication;
     }
 
     Console.WriteLine("The total sum is: " + totalSum);
+  }
+
+  public static int howManyTimes(int searchNum, List<int> list)
+  {
+    //find
+    int foundIndex = list.IndexOf(searchNum);
+    if (foundIndex < 0) return 0;
+
+    //and count
+    int count = 1;
+    while (list[foundIndex + count] == searchNum)
+    {
+      count++;
+    }
+
+    return count;
   }
 
   public static int getNumInLine(string line, bool fromEnd)
@@ -66,22 +91,20 @@ class InputReader
   public string[] InputString
   { get; set; }
 
-  public InputReader(bool isDemo)
+  public InputReader(string path)
   {
-    getInput(isDemo);
+    getInput(path);
   }
 
-  private void getInput(bool isDemo)
+  private void getInput(string path)
   {
-    string inputPath = isDemo ? "./demoInput.txt" : "./input.txt";
-
     try
     {
-      InputString = File.ReadAllLines(inputPath);
+      InputString = File.ReadAllLines(path);
     }
     catch (System.Exception)
     {
-      Console.WriteLine("\nan error occured while reading the input file\n");
+      Console.WriteLine("\n[ERROR] while reading the input file\n");
       throw;
     }
   }
