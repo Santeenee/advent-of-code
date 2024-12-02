@@ -11,37 +11,46 @@ class Program
   static void Main(string[] args)
   {
     Console.WriteLine("--------------\nGet sum of pairs\n");
+
     InputReader reader = new("./input.txt");
 
-    foreach (string line in reader.InputString)
+    foreach (string report in reader.InputString)
     {
-      int leftNum = getNumInLine(line, false);
-      int rightNum = getNumInLine(line, true);
-
-      leftList.Add(leftNum);
-      rightList.Add(rightNum);
-    }
-
-    leftList.Sort();
-    rightList.Sort();
-
-    for (int i = 0; i < leftList.Count; i++)
-    {
-      // PART 01
-      /*
-        int sum = leftList[i] - rightList[i];
-        sum = Math.Abs(sum);
-        totalSum += sum;
-      */
-
-      // PART 02
-      int times = howManyTimes(leftList[i], rightList);
-      int multiplication = leftList[i] * times;
-
-      totalSum += multiplication;
+      bool isSafe = getReportSafety(report);
+      if (isSafe) totalSum++;
     }
 
     Console.WriteLine("The total sum is: " + totalSum);
+  }
+
+  public static bool getReportSafety(string reportString)
+  {
+    // populate List<int> report
+    List<int> report = [];
+
+    string[] reportSplit = reportString.Split(" ");
+    for (int i = 0; i < reportSplit.Length; i++)
+    {
+      report.Add(Int32.Parse(reportSplit[i]));
+    }
+
+    // check safety
+    int constantSlopeCheck = 0;
+    for (int level = 0; level < report.Count - 1; level++)
+    {
+      if (report[level + 1] - report[level] > 0) constantSlopeCheck++;
+
+      int difference = report[level] - report[level + 1];
+      difference = Math.Abs(difference);
+      if (difference > 3 || difference <= 0) return false;
+    }
+
+    if (
+      constantSlopeCheck == (report.Count - 1)
+      || constantSlopeCheck == 0
+    ) return true;
+
+    return false;
   }
 
   public static int howManyTimes(int searchNum, List<int> list)
