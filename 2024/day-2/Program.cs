@@ -3,95 +3,78 @@
 
 class Program
 {
-  public static List<int> leftList = [];
-  public static List<int> rightList = [];
-
   public static int totalSum = 0;
+  public static List<int> report = [];
 
   static void Main(string[] args)
   {
-    Console.WriteLine("--------------\nGet sum of pairs\n");
+    Console.WriteLine($"--------------\n{args[0]}\nGet sum of pairs\n");
 
-    InputReader reader = new("./input.txt");
+    InputReader reader = new($"./{args[0] ?? "demoInput"}.txt");
 
-    foreach (string report in reader.InputString)
+    int a = 0;
+    foreach (string reportString in reader.InputString)
     {
-      bool isSafe = getReportSafety(report);
+      // populate List<int> report
+      report = [];
+      string[] reportSplit = reportString.Split(" ");
+      for (int i = 0; i < reportSplit.Length; i++)
+      {
+        report.Add(Int32.Parse(reportSplit[i]));
+      }
+
+      Console.Write(reportString.PadRight(24));
+      bool isSafe = getReportSafety();
+      Console.Write($" {isSafe}\n");
       if (isSafe) totalSum++;
+      a++;
     }
 
     Console.WriteLine("The total sum is: " + totalSum);
   }
 
-  public static bool getReportSafety(string reportString)
+  public static bool getReportSafety(int safetyNum = 0)
   {
-    // populate List<int> report
-    List<int> report = [];
-
-    string[] reportSplit = reportString.Split(" ");
-    for (int i = 0; i < reportSplit.Length; i++)
-    {
-      report.Add(Int32.Parse(reportSplit[i]));
-    }
-
     // check safety
-    int constantSlopeCheck = 0;
+    int constantSlopeCount = 0;
     for (int level = 0; level < report.Count - 1; level++)
     {
-      if (report[level + 1] - report[level] > 0) constantSlopeCheck++;
+      if (report[level + 1] - report[level] > 0) constantSlopeCount++;
 
       int difference = report[level] - report[level + 1];
       difference = Math.Abs(difference);
-      if (difference > 3 || difference <= 0) return false;
+
+      // if it finds an error
+      if (
+        (difference > 3 || difference == 0)
+        ||
+        (constantSlopeCount != (level + 1) && constantSlopeCount != 0)
+      )
+      {
+        // tolerance: 1 error per report
+        if (safetyNum < 1)
+        {
+          //remove possible error
+          if (checkAllLevels()) return true;
+        }
+        return false;
+      }
     }
 
-    if (
-      constantSlopeCheck == (report.Count - 1)
-      || constantSlopeCheck == 0
-    ) return true;
+    return true;
+  }
 
+  public static bool checkAllLevels()
+  {
+    for (int i = 0; i < report.Count; i++)
+    {
+      int prevValue = report[i];
+      report.RemoveAt(i);
+      bool isSafe = getReportSafety(1);
+      report.Insert(i, prevValue);
+      if (isSafe) return true;
+    }
     return false;
-  }
-
-  public static int howManyTimes(int searchNum, List<int> list)
-  {
-    //find
-    int foundIndex = list.IndexOf(searchNum);
-    if (foundIndex < 0) return 0;
-
-    //and count
-    int count = 1;
-    while (list[foundIndex + count] == searchNum)
-    {
-      count++;
-    }
-
-    return count;
-  }
-
-  public static int getNumInLine(string line, bool fromEnd)
-  {
-    string tempString = "";
-    int charIndex = fromEnd ? line.Length - 1 : 0;
-
-    while (Char.IsDigit(line[charIndex]))
-    {
-      if (fromEnd)
-      {
-        tempString = $"{line[charIndex]}{tempString}";
-        charIndex--;
-      }
-      else
-      {
-        tempString += line[charIndex];
-        charIndex++;
-      }
-    }
-
-    int result = 0;
-    Int32.TryParse(tempString, out result);
-
-    return result;
   }
 }
 
