@@ -1,0 +1,5 @@
+/Users/wn00235252/Documents/projects/advent-of-code/2024/obj/Debug/net9.0/2024.GeneratedMSBuildEditorConfig.editorconfig
+/Users/wn00235252/Documents/projects/advent-of-code/2024/obj/Debug/net9.0/2024.AssemblyInfoInputs.cache
+/Users/wn00235252/Documents/projects/advent-of-code/2024/obj/Debug/net9.0/2024.AssemblyInfo.cs
+/Users/wn00235252/Documents/projects/advent-of-code/2024/obj/Debug/net9.0/2024.csproj.CoreCompileInputs.cache
+/Users/wn00235252/Documents/projects/advent-of-code/2024/obj/Debug/net9.0/2024.sourcelink.json

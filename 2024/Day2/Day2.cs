@@ -1,7 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
-// Console.WriteLine("Hello, World!");
+﻿namespace aoc2024.Day2;
 
-class Program
+using aoc2024.InputReader;
+
+class Day2
 {
   public static int totalSum = 0;
   public static List<int> report = [];
@@ -75,29 +76,5 @@ class Program
       if (isSafe) return true;
     }
     return false;
-  }
-}
-
-class InputReader
-{
-  public string[]? InputString
-  { get; set; }
-
-  public InputReader(string path)
-  {
-    getInput(path);
-  }
-
-  private void getInput(string path)
-  {
-    try
-    {
-      InputString = File.ReadAllLines(path);
-    }
-    catch (System.Exception)
-    {
-      Console.WriteLine("\n[ERROR] while reading the input file\n");
-      throw;
-    }
   }
 }
